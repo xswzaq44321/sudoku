@@ -7,31 +7,11 @@ char note[9][9][9] = {0};
 int initial = 1;
 
 int blockCoordinateI(int a, int i){
-	switch(a / 3){
-		case 0:
-			return i / 3 + 0;
-			break;
-		case 1:
-			return i / 3 + 3;
-			break;
-		case 2:
-			return i / 3 + 6;
-			break;
-	}
+	return i / 3 + ((int)(a / 3) * 3);
 }
 
 int blockCoordinateJ(int b, int i){
-	switch(b / 3){
-		case 0:
-			return i % 3 + 0;
-			break;
-		case 1:
-			return i % 3 + 3;
-			break;
-		case 2:
-			return i % 3 + 6;
-			break;
-	}
+	return i % 3 + ((int)(b / 3) * 3);
 }
 
 int takeNote(int a, int b){
@@ -195,6 +175,7 @@ int main(){
 					quiz[i][j] = check(i, j);
 					if(quiz[i][j]){ //if up date success
 						upDated++;
+						clearNote(i, j);
 					}
 				}
 			}
