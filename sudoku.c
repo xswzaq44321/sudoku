@@ -153,8 +153,8 @@ int main(int argc, char **argv){
 	}
 	for(int i = 0; i < 9; ++i){//read in
 		for(int j = 0; j < 9; ++j){
-			fscanf(ifp, "%c", &quiz[i][j]);
-			quiz[i][j] -= 48;
+			fscanf(ifp, "%d", &quiz[i][j]);
+			//quiz[i][j] -= 48;
 		}
 		fscanf(ifp, "\n", NULL);
 	}
