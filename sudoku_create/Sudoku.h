@@ -16,6 +16,7 @@ class Sudoku
 		void create(int numberCount = 30);
 		void subCreate(int numberCount);
 		void clearMember();
+		void setDif(int dif);
 	private:
 		char quiz[9][9] = {0};
 		char note[9][9][9] = {0};

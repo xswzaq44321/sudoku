@@ -235,3 +235,8 @@ void Sudoku::clearMember(){
 		}
 	}
 }
+
+void setDif(int dif){
+	Sudoku temp = *this;
+	temp.solve();
+}
