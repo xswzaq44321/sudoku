@@ -5,6 +5,8 @@
 #include "sudoku.h"
 #define BLOCKI(a, i) (i / 3 + static_cast<int>(a / 3) * 3)
 #define BLOCKJ(b, i) (i % 3 + static_cast<int>(b / 3) * 3)
+#define GRN   "\x1B[32m"
+#define RESET "\x1B[0m"
 
 Sudoku::Sudoku(){
 }
@@ -26,14 +28,15 @@ char Sudoku::getQuiz(int i, int j){
 }
 
 void Sudoku::printQuiz(){
-	printf("=================\n");
+	printf("=====================\n");
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
-			printf("%d ", quiz[i][j]);
+			printf(quiz[i][j] ? GRN "%d " RESET : "%d ", quiz[i][j]);
+			printf(j % 3 == 2 ? "|" : "");
 		}
-		printf("\n");
+		printf(i % 3 == 2 ? "\n---------------------\n" :"\n");
 	}
-	printf("=================\n");
+	printf("=====================\n");
 }
 
 void Sudoku::takeNote(int a, int b){
@@ -237,6 +240,6 @@ void Sudoku::clearMember(){
 }
 
 void setDif(int dif){
-	Sudoku temp = *this;
+	Sudoku temp;
 	temp.solve();
 }

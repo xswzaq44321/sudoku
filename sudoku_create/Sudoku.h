@@ -19,6 +19,7 @@ class Sudoku
 		void setDif(int dif);
 	private:
 		char quiz[9][9] = {0};
+		char sol[9][9] = {0};
 		char note[9][9][9] = {0};
 		bool initial = true;
 };
