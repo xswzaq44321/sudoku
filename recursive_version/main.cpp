@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include "Sudoku.h"
+#define BLOCKI(a, i) (i / 3 + (int)(a / 3) * 3)
+#define BLOCKJ(b, i) (i % 3 + (int)(b / 3) * 3)
 using namespace std;
 
 bool duplicate(Sudoku question, int num, int index){
@@ -12,6 +14,14 @@ bool duplicate(Sudoku question, int num, int index){
 	}
 	for(int i = 0; i < 9; ++i){ // check column
 		if(num == question.getElement((index % 9) + i * 9)){
+			return true;
+		}
+	}
+	for(int i = 0; i < 9; ++i){
+		int blockI, blockJ;
+		blockI = BLOCKI((index / 9), i);
+		blockJ = BLOCKJ((index % 9), i);
+		if(num == question.getElement(blockI * 9 + blockJ)){
 			return true;
 		}
 	}
