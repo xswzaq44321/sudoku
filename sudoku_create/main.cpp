@@ -13,7 +13,7 @@ int readIn(FILE *ifp, char arr[][9]){
 }
 
 int main(int argc, char **argv){
-	int numberCount = 30;
+	int numberCount = 25;
 	char quest[9][9] = {{0}};
 	bool quizExist = false;
 	FILE *ifp;
@@ -39,6 +39,7 @@ int main(int argc, char **argv){
 	if(!quizExist){
 		obj.create(numberCount);
 	}
+	obj.setDif(15);
 	obj.solve();
 	printf("Quiz = \n");
 	obj.printQuiz();

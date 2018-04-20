@@ -16,12 +16,13 @@ class Sudoku
 		bool isCorrect(char arr[][9]);
 		void clearMember();
 		void subCreate(int numberCount);
-		void create(int numberCount = 30);
+		void create(int numberCount = 25);
 		void setDif(int dif);
 	private:
 		char quiz[9][9] = {0};
 		char ans[9][9] = {0};
 		char note[9][9][9] = {0};
 		bool initial = true;
+		bool solved = false;
 };
 

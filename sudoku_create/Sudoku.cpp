@@ -191,6 +191,9 @@ int Sudoku::check(int a, int b){
 }
 
 void Sudoku::solve(){
+	if(solved){
+		return;
+	}
 	int upDate;
 	initial = true;
 	for(int i = 0; i < 9; ++i){
@@ -213,6 +216,7 @@ void Sudoku::solve(){
 		}
 		initial = false;
 	}while(upDate);
+	solved = true;
 }
 
 bool Sudoku::isCorrect(char arr[][9]){
@@ -234,6 +238,7 @@ void Sudoku::clearMember(){
 			ans[i][j] = 0;
 			clearNote(i, j);
 			initial = true;
+			solved = false;
 		}
 	}
 }
@@ -258,16 +263,22 @@ void Sudoku::create(int numberCount){
 	while(!result){
 		clearMember();
 		subCreate(numberCount);
-		//printf("\n\n");
-		//temp.printQuiz();
 		solve();
-		//temp.printQuiz();
 		result = isCorrect(ans);
 	}
 }
 
-void setDif(int dif){
+void Sudoku::setDif(int dif){
+	srand(time(NULL));
+	char tempI, tempJ;
+	solve();
 	for(int i = 0; i < dif; ++i){
-		
+		tempI = rand() % 9;
+		tempJ = rand() % 9;
+		if(quiz[tempI][tempJ] == 0){
+			quiz[tempI][tempJ] = ans[tempI][tempJ];
+		}else{
+			--i;
+		}
 	}
 }
