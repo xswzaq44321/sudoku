@@ -4,9 +4,18 @@
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 
+void readIn(FILE *ifp, char arr[9][9]){
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			fscanf(ifp, "%d ", &arr[i][j]);
+		}
+	}
+}
+
 int main(int argc, char **argv){
-	Sudoku quiz;
-	int numberCount = 30;
+	int numberCount = 25;
+	char quest[9][9];
+	bool quizExist = false;
 	FILE *ifp;
 
 	for(int i = 1; i < argc; ++i){
@@ -18,6 +27,8 @@ int main(int argc, char **argv){
 				break;
 				case 'f':
 					ifp = fopen(argv[i + 1], "r");
+					readIn(ifp, quest);
+					quizExist = true;
 					++i;
 				break;
 				default:
@@ -26,10 +37,14 @@ int main(int argc, char **argv){
 		}
 	}
 
-	quiz.create(numberCount);
+	Sudoku obj(quest);
+	if(!quizExist){
+		obj.create(numberCount);
+		obj.setDif(0);
+	}
 	printf("Quiz = \n");
-	quiz.printQuiz();
+	obj.printQuiz();
 	printf("\nSol = \n");
-	quiz.solve();
-	quiz.printQuiz();
+	obj.solve();
+	obj.printQuiz();
 }

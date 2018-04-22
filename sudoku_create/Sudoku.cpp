@@ -245,8 +245,24 @@ void Sudoku::clearData(){
 	initial = true;
 }
 
-void Sudoku::setDif(int dif){
-	Sudoku temp;
-	temp = *this;
-	temp.solve();
+void Sudoku::setDif(int dif){ // dif = [0,1,2,3,4,5]
+	char number = 25 - dif * 5;
+	if(number + dif > 80){
+		return;
+	}
+	srand(time(NULL));
+	char tempI, tempJ;
+	Sudoku answer;
+	answer = *this;
+	answer.solve();
+	for(int i = 0; i < number; ++i){
+		tempI = rand() % 9;
+		tempJ = rand() % 9;
+		if(map[tempI][tempJ] == answer.map[tempI][tempJ]){
+			--i;
+			continue;
+		}else{
+			map[tempI][tempJ] = answer.map[tempI][tempJ];
+		}
+	}
 }
