@@ -14,24 +14,24 @@ Sudoku::Sudoku(){
 Sudoku::Sudoku(const char initMap[][9]){
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
-			quiz[i][j] = initMap[i][j];
+			map[i][j] = initMap[i][j];
 		}
 	}
 }
 
 void Sudoku::setQuiz(int i, int j, char n){
-	quiz[i][j] = n;
+	map[i][j] = n;
 }
 
 char Sudoku::getQuiz(int i, int j){
-	return quiz[i][j];
+	return map[i][j];
 }
 
 void Sudoku::printQuiz(){
 	printf("=====================\n");
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
-			printf(quiz[i][j] ? GRN "%d " RESET : "%d ", quiz[i][j]);
+			printf(map[i][j] ? GRN "%d " RESET : "%d ", map[i][j]);
 			printf(j % 3 == 2 ? "|" : "");
 		}
 		printf(i % 3 == 2 ? "\n---------------------\n" :"\n");
@@ -46,21 +46,21 @@ void Sudoku::takeNote(int a, int b){
 		}
 	}
 	for(int i = 0; i < 9; ++i){ // check row
-		if(quiz[a][i] != 0){
-			note[a][b][ quiz[a][i] - 1 ] = 0;
+		if(map[a][i] != 0){
+			note[a][b][ map[a][i] - 1 ] = 0;
 		}
 	}
 	for(int i = 0; i < 9; ++i){ // check column
-		if(quiz[i][b] != 0){
-			note[a][b][ quiz[i][b] - 1 ] = 0;
+		if(map[i][b] != 0){
+			note[a][b][ map[i][b] - 1 ] = 0;
 		}
 	}
 	for(int i = 0; i < 9; ++i){ // check block
 		char blockI, blockJ;
 		blockI = BLOCKI(a, i);
 		blockJ = BLOCKJ(b, i);
-		if(quiz[blockI][blockJ] != 0){
-			note[a][b][ quiz[blockI][blockJ] - 1 ] = 0;
+		if(map[blockI][blockJ] != 0){
+			note[a][b][ map[blockI][blockJ] - 1 ] = 0;
 		}
 	}
 }
@@ -74,19 +74,19 @@ void Sudoku::clearNote(int a, int b){
 bool Sudoku::checkDuplicate(int a, int b, int n){
 	char blockI, blockJ;
 	for(int i = 0; i < 9; ++i){ // check row
-		if(i != b && quiz[a][i] == n){
+		if(i != b && map[a][i] == n){
 			return true;
 		}
 	}
 	for(int i = 0; i < 9; ++i){ // check column
-		if(i != a && quiz[i][b] == n){
+		if(i != a && map[i][b] == n){
 			return true;
 		}
 	}
 	for(int i = 0; i < 9; ++i){ // check block
 		blockI = BLOCKI(a, i);
 		blockJ = BLOCKJ(b, i);
-		if((blockI != a && blockJ != b) && quiz[blockI][blockJ] == n){
+		if((blockI != a && blockJ != b) && map[blockI][blockJ] == n){
 			return true;
 		}
 	}
@@ -166,14 +166,14 @@ int Sudoku::check(int a, int b){
 		return whatIsIt + 1;
 	}
 
-	return initial ? 0 : checkSpecial(a, b);
+	return 0;
 }
 
 bool Sudoku::isCorrect(){
 	bool checkResult;
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
-			if((quiz[i][j] == 0) || checkDuplicate(i, j, quiz[i][j])){
+			if((map[i][j] == 0) || checkDuplicate(i, j, map[i][j])){
 				return false;
 			}
 		}
@@ -183,13 +183,19 @@ bool Sudoku::isCorrect(){
 
 void Sudoku::solve(){
 	int upDate;
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			takeNote(i, j);
+		}
+	}
 	do{
 		upDate = 0;
 		for(int i = 0; i < 9; ++i){
 			for(int j = 0; j < 9; ++j){
-				if(quiz[i][j] == 0){ // only execute where are needed
-					quiz[i][j] = check(i, j);
-					if(quiz[i][j] != 0){ // if up date success
+				if(map[i][j] == 0){ // only execute where are needed
+					map[i][j] = check(i, j);
+					if(map[i][j] == 0) checkSpecial(i, j);
+					if(map[i][j] != 0){ // if up date success
 						++upDate;
 						clearNote(i, j);
 					}
@@ -206,8 +212,8 @@ void Sudoku::subCreate(int numberCount){
 		temp = rand() % 9 + 1;
 		tempI = rand() % 9;
 		tempJ = rand() % 9;
-		if(quiz[tempI][tempJ] == 0 && !checkDuplicate(tempI, tempJ, temp)){
-			quiz[tempI][tempJ] = temp;
+		if(map[tempI][tempJ] == 0 && !checkDuplicate(tempI, tempJ, temp)){
+			map[tempI][tempJ] = temp;
 			++count;
 		}
 	}
@@ -218,7 +224,7 @@ void Sudoku::create(int numberCount){
 	srand(time(NULL));
 	bool result = false;
 	while(!result){
-		this->clearMember();
+		this->clearData();
 		subCreate(numberCount);
 		temp = *this;
 		//printf("\n\n");
@@ -229,17 +235,18 @@ void Sudoku::create(int numberCount){
 	}
 }
 
-void Sudoku::clearMember(){
+void Sudoku::clearData(){
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
 			this->setQuiz(i, j, 0);
 			this->clearNote(i, j);
-			initial = true;
 		}
 	}
+	initial = true;
 }
 
-void setDif(int dif){
+void Sudoku::setDif(int dif){
 	Sudoku temp;
+	temp = *this;
 	temp.solve();
 }

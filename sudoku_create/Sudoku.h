@@ -1,3 +1,5 @@
+#include <vector>
+
 class Sudoku
 {
 	public:
@@ -15,12 +17,12 @@ class Sudoku
 		void solve();
 		void create(int numberCount = 30);
 		void subCreate(int numberCount);
-		void clearMember();
+		void clearData();
 		void setDif(int dif);
 	private:
-		char quiz[9][9] = {0};
-		char sol[9][9] = {0};
+		char map[9][9] = {0};
 		char note[9][9][9] = {0};
 		bool initial = true;
+		std::vector<Sudoku> ans;
 };
 
