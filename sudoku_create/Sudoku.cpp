@@ -19,15 +19,15 @@ Sudoku::Sudoku(const char initMap[][9]){
 	}
 }
 
-void Sudoku::setQuiz(int i, int j, char n){
+void Sudoku::setMap(int i, int j, char n){
 	map[i][j] = n;
 }
 
-char Sudoku::getQuiz(int i, int j){
+char Sudoku::getMap(int i, int j){
 	return map[i][j];
 }
 
-void Sudoku::printQuiz(){
+void Sudoku::printMap(){
 	printf("=====================\n");
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
@@ -226,10 +226,7 @@ void Sudoku::create(int numberCount){
 		this->clearData();
 		subCreate(numberCount);
 		temp = *this;
-		//printf("\n\n");
-		//temp.printQuiz();
 		temp.solve();
-		//temp.printQuiz();
 		result = temp.isCorrect();
 	}
 }
@@ -237,7 +234,7 @@ void Sudoku::create(int numberCount){
 void Sudoku::clearData(){
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
-			this->setQuiz(i, j, 0);
+			this->setMap(i, j, 0);
 			this->clearNote(i, j);
 		}
 	}
@@ -246,7 +243,7 @@ void Sudoku::clearData(){
 
 void Sudoku::setDif(int dif){ // dif = [0,1,2,3,4,5]
 	char number = 25 - dif * 5;
-	if(number + dif > 80){
+	if(number + dif > 80 || number == 0){
 		return;
 	}
 	srand(time(NULL));

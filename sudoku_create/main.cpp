@@ -43,8 +43,8 @@ int main(int argc, char **argv){
 		obj.setDif(dif);
 	}
 	printf("Quiz = \n");
-	obj.printQuiz();
+	obj.printMap();
 	printf("\nSol = \n");
 	obj.solve();
-	obj.printQuiz();
+	obj.printMap();
 }
