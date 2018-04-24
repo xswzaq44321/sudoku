@@ -6,6 +6,7 @@
 #define BLOCKI(a, i) (i / 3 + static_cast<int>(a / 3) * 3)
 #define BLOCKJ(b, i) (i % 3 + static_cast<int>(b / 3) * 3)
 #define GRN   "\x1B[32m"
+#define CYN   "\x1B[36m"
 #define RESET "\x1B[0m"
 
 Sudoku::Sudoku(){
@@ -32,6 +33,26 @@ void Sudoku::printMap(){
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
 			printf(map[i][j] ? GRN "%d " RESET : "%d ", map[i][j]);
+			printf(j % 3 == 2 ? "|" : "");
+		}
+		printf(i % 3 == 2 ? "\n---------------------\n" :"\n");
+	}
+	printf("=====================\n");
+}
+
+void Sudoku::printAns(){
+	printf("=====================\n");
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			if(ans[i][j]){
+				if(ans[i][j] == quiz[i][j]){
+					printf(GRN "%d " RESET, ans[i][j]);
+				}else{
+					printf(CYN "%d " RESET, ans[i][j]);
+				}
+			}else{
+				printf("%d ", ans[i][j]);
+			}
 			printf(j % 3 == 2 ? "|" : "");
 		}
 		printf(i % 3 == 2 ? "\n---------------------\n" :"\n");
@@ -71,7 +92,7 @@ void Sudoku::clearNote(int a, int b){
 	}
 }
 
-bool Sudoku::checkDuplicate(int a, int b, int n){
+bool Sudoku::checkDuplicate(int a, int b, int n, char arr[][9]){
 	char blockI, blockJ;
 	for(int i = 0; i < 9; ++i){ // check row
 		if(i != b && map[a][i] == n){
@@ -108,7 +129,7 @@ int Sudoku::checkSpecial(int a, int b){
 		//that means that number is the only one that can fit in the point.
 		//since the note of the point will only update when "check()" processed
 		//therefore, we need to check what had filled in before
-		if(filled[i] == 1 && !checkDuplicate(a, b, i+1)){
+		if(filled[i] == 1 && !checkDuplicate(a, b, i+1, ans)){
 			return i + 1;
 		}
 	}
@@ -124,7 +145,7 @@ int Sudoku::checkSpecial(int a, int b){
 		}
 	}
 	for(int i = 0; i < 9; ++i){
-		if(filled[i] == 1 && !checkDuplicate(a, b, i+1)){
+		if(filled[i] == 1 && !checkDuplicate(a, b, i+1, ans)){
 			return i + 1;
 		}
 	}
@@ -143,7 +164,7 @@ int Sudoku::checkSpecial(int a, int b){
 		}
 	}
 	for(int i = 0; i < 9; ++i){
-		if(filled[i] == 1 && !checkDuplicate(a, b, i+1)){
+		if(filled[i] == 1 && !checkDuplicate(a, b, i+1, ans)){
 			return i + 1;
 		}
 	}
@@ -160,7 +181,7 @@ int Sudoku::check(int a, int b){
 		}
 	}
 	if(howMany == 0){
-		//fprintf(stderr, "error! Can't fill any number on [%d, %d]\n", a, b);
+		fprintf(stderr, "error! Can't fill any number on [%d, %d]\n", a, b);
 		return 0;
 	}else if(howMany == 1){
 		return whatIsIt + 1;
@@ -169,8 +190,12 @@ int Sudoku::check(int a, int b){
 	return checkSpecial(a, b);
 }
 
-bool Sudoku::isCorrect(){
-	bool checkResult;
+void Sudoku::solve(){
+	if(solved){
+		return;
+	}
+	int upDate;
+	initial = true;
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
 			if((map[i][j] == 0) || checkDuplicate(i, j, map[i][j])){
@@ -203,6 +228,31 @@ void Sudoku::solve(){
 		}
 		initial = false;
 	}while(upDate);
+	solved = true;
+}
+
+bool Sudoku::isCorrect(char arr[][9]){
+	bool checkResult;
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			if((arr[i][j] == 0) || checkDuplicate(i, j, arr[i][j], arr)){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void Sudoku::clearMember(){
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			quiz[i][j] = 0;
+			ans[i][j] = 0;
+			clearNote(i, j);
+			initial = true;
+			solved = false;
+		}
+	}
 }
 
 void Sudoku::subCreate(int numberCount){

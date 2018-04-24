@@ -8,10 +8,9 @@ class Sudoku
 		void printMap();
 		void takeNote(int a, int b);
 		void clearNote(int a, int b);
-		bool checkDuplicate(int a, int b, int n);
+		bool checkDuplicate(int a, int b, int n, char arr[][9]);
 		int checkSpecial(int a, int b);
 		int check(int a, int b);
-		bool isCorrect();
 		void solve();
 		void create(int numberCount = 25);
 		void subCreate(int numberCount);
@@ -21,5 +20,6 @@ class Sudoku
 		char map[9][9] = {0};
 		char note[9][9][9] = {0};
 		bool initial = true;
+		bool solved = false;
 };
 

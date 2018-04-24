@@ -1,8 +1,16 @@
 #include <iostream>
 #include "Sudoku.h"
 
-#define RED   "\x1B[31m"
-#define GRN   "\x1B[32m"
+#define RED "\x1B[31m"
+#define GRN "\x1B[32m"
+
+int readIn(FILE *ifp, char arr[][9]){
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			fscanf(ifp, "%d", &arr[i][j]);
+		}
+	}
+}
 
 void readIn(FILE *ifp, char arr[9][9]){
 	for(int i = 0; i < 9; ++i){
@@ -30,8 +38,6 @@ int main(int argc, char **argv){
 					readIn(ifp, quest);
 					quizExist = true;
 					++i;
-				break;
-				default:
 				break;
 			}
 		}
