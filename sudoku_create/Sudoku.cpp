@@ -166,7 +166,7 @@ int Sudoku::check(int a, int b){
 		return whatIsIt + 1;
 	}
 
-	return 0;
+	return checkSpecial(a, b);
 }
 
 bool Sudoku::isCorrect(){
@@ -194,7 +194,6 @@ void Sudoku::solve(){
 			for(int j = 0; j < 9; ++j){
 				if(map[i][j] == 0){ // only execute where are needed
 					map[i][j] = check(i, j);
-					if(map[i][j] == 0) checkSpecial(i, j);
 					if(map[i][j] != 0){ // if up date success
 						++upDate;
 						clearNote(i, j);

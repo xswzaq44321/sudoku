@@ -13,7 +13,7 @@ void readIn(FILE *ifp, char arr[9][9]){
 }
 
 int main(int argc, char **argv){
-	int numberCount = 25;
+	int dif = 0;
 	char quest[9][9];
 	bool quizExist = false;
 	FILE *ifp;
@@ -21,8 +21,8 @@ int main(int argc, char **argv){
 	for(int i = 1; i < argc; ++i){
 		if(argv[i][0] == '-'){
 			switch(argv[i][1]){
-				case 'n':
-					numberCount = atoi(argv[i + 1]);
+				case 'd':
+					dif = atoi(argv[i + 1]);
 					++i;
 				break;
 				case 'f':
@@ -39,8 +39,8 @@ int main(int argc, char **argv){
 
 	Sudoku obj(quest);
 	if(!quizExist){
-		obj.create(numberCount);
-		obj.setDif(0);
+		obj.create();
+		obj.setDif(dif);
 	}
 	printf("Quiz = \n");
 	obj.printQuiz();

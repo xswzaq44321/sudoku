@@ -15,7 +15,7 @@ class Sudoku
 		int check(int a, int b);
 		bool isCorrect();
 		void solve();
-		void create(int numberCount = 30);
+		void create(int numberCount = 25);
 		void subCreate(int numberCount);
 		void clearData();
 		void setDif(int dif);
