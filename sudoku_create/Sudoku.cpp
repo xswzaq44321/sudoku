@@ -2,10 +2,11 @@
 #include <ctime>
 #include <cstdlib>
 #include <unistd.h>
-#include "sudoku.h"
+#include "Sudoku.h"
 #define BLOCKI(a, i) (i / 3 + static_cast<int>(a / 3) * 3)
 #define BLOCKJ(b, i) (i % 3 + static_cast<int>(b / 3) * 3)
 #define GRN   "\x1B[32m"
+#define CYN   "\x1B[36m"
 #define RESET "\x1B[0m"
 
 Sudoku::Sudoku(){
@@ -160,25 +161,13 @@ int Sudoku::check(int a, int b){
 		}
 	}
 	if(howMany == 0){
-		//fprintf(stderr, "error! Can't fill any number on [%d, %d]\n", a, b);
+		fprintf(stderr, "error! Can't fill any number on [%d, %d]\n", a, b);
 		return 0;
 	}else if(howMany == 1){
 		return whatIsIt + 1;
 	}
 
 	return checkSpecial(a, b);
-}
-
-bool Sudoku::isCorrect(){
-	bool checkResult;
-	for(int i = 0; i < 9; ++i){
-		for(int j = 0; j < 9; ++j){
-			if((map[i][j] == 0) || checkDuplicate(i, j, map[i][j])){
-				return false;
-			}
-		}
-	}
-	return true;
 }
 
 void Sudoku::solve(){
@@ -205,6 +194,18 @@ void Sudoku::solve(){
 	}while(upDate);
 }
 
+bool Sudoku::isCorrect(){
+	bool checkResult;
+	for(int i = 0; i < 9; ++i){
+		for(int j = 0; j < 9; ++j){
+			if((map[i][j] == 0) || checkDuplicate(i, j, map[i][j])){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 void Sudoku::subCreate(int numberCount){
 	char temp, tempI, tempJ, count = 0;
 	while(count < numberCount){
@@ -226,10 +227,7 @@ void Sudoku::create(int numberCount){
 		this->clearData();
 		subCreate(numberCount);
 		temp = *this;
-		//printf("\n\n");
-		//temp.printQuiz();
 		temp.solve();
-		//temp.printQuiz();
 		result = temp.isCorrect();
 	}
 }
