@@ -10,9 +10,11 @@
 #define RESET "\x1B[0m"
 
 Sudoku::Sudoku(){
+	this->clearData();
 }
 
 Sudoku::Sudoku(const char initMap[][9]){
+	this->clearData();
 	for(int i = 0; i < 9; ++i){
 		for(int j = 0; j < 9; ++j){
 			map[i][j] = initMap[i][j];

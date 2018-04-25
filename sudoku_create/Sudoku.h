@@ -21,8 +21,8 @@ class Sudoku
 		void clearData();
 		void setDif(int dif);
 	private:
-		char map[9][9] = {0};
-		char note[9][9][9] = {0};
-		bool initial = true;
+		char map[9][9];
+		char note[9][9][9];
+		bool initial;
 };
 
